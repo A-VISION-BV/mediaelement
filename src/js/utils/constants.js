@@ -9,7 +9,30 @@ export const UA = NAV.userAgent.toLowerCase();
 export const IS_IPAD = /ipad/i.test(UA) && !window.MSStream;
 export const IS_IPHONE = /iphone/i.test(UA) && !window.MSStream;
 export const IS_IPOD = /ipod/i.test(UA) && !window.MSStream;
-export const IS_IOS = /ipad|iphone|ipod/i.test(UA) && !window.MSStream;
+export const IS_IOS = iOS()
+
+function iOS() {
+	return [
+		'iPad Simulator',
+		'iPhone Simulator',
+		'iPod Simulator',
+		'iPad',
+		'iPhone',
+		'iPod'
+	].includes(navigator.platform)
+	
+	// iPad on iOS 13 detection
+	|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+}
+
+export function isTouchDevice() {
+	return (
+		('ontouchstart' in window) ||
+		(navigator.maxTouchPoints > 0) ||
+		(navigator.msMaxTouchPoints > 0)
+	);
+}
+
 export const IS_ANDROID = /android/i.test(UA);
 export const IS_IE = /(trident|microsoft)/i.test(NAV.appName);
 export const IS_EDGE = ('msLaunchUri' in NAV && !('documentMode' in document));

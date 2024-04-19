@@ -4,7 +4,7 @@ import document from 'global/document';
 import {config} from '../player';
 import MediaElementPlayer from '../player';
 import i18n from '../core/i18n';
-import {IS_FIREFOX, IS_IOS, IS_ANDROID, SUPPORT_PASSIVE_EVENT} from '../utils/constants';
+import {IS_FIREFOX, IS_IOS, IS_ANDROID, SUPPORT_PASSIVE_EVENT, isTouchDevice} from '../utils/constants';
 import {secondsToTimeCode} from '../utils/time';
 import {offset, addClass, removeClass, hasClass} from '../utils/dom';
 
@@ -241,7 +241,7 @@ Object.assign(MediaElementPlayer.prototype, {
 					}
 
 					// position floating time box
-					if (!IS_IOS && !IS_ANDROID) {
+					if (isTouchDevice()) {
 						if (pos < 0){
 							pos = 0;
 						}
@@ -288,7 +288,7 @@ Object.assign(MediaElementPlayer.prototype, {
 							t.timefloat.style.display = 'block';
 						}
 					}
-				} else if (!IS_IOS && !IS_ANDROID && t.timefloat) {
+				} else if (!isTouchDevice() && t.timefloat) {
 					leftPos = t.timefloat.offsetWidth + width >= t.getElement(t.container).offsetWidth ? t.timefloat.offsetWidth / 2 : 0;
 					t.timefloat.style.left = leftPos + 'px';
 					t.timefloat.style.left = `${leftPos}px`;
