@@ -25,6 +25,13 @@ function iOS() {
 	|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 }
 
+export function isTouchDevice() {
+	return (
+		('ontouchstart' in window) ||
+		(navigator.maxTouchPoints > 0) ||
+		(navigator.msMaxTouchPoints > 0)
+	);
+}
 
 export const IS_ANDROID = /android/i.test(UA);
 export const IS_IE = /(trident|microsoft)/i.test(NAV.appName);
