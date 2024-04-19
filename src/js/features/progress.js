@@ -28,6 +28,11 @@ Object.assign(config, {
 	 */
 	useSmoothHover: true,
 	/**
+	 * When hover is past current playback, move the start point after current playback point
+	 * @type {Boolean}
+	 */
+	useFancyHover: true,
+	/**
 	 * If set to `true`, the `Live Broadcast` message will be displayed no matter if `duration` is a valid number
 	 */
 	forceLive: false
@@ -665,7 +670,7 @@ Object.assign(MediaElementPlayer.prototype, {
 				t.setTransformStyle(t.current,`scaleX(${newWidth/tW})`);
 				t.setTransformStyle(t.handle,`translateX(${handlePos}px)`);
 
-				if (t.options.useSmoothHover && !hasClass(t.hovered, 'no-hover')) {
+				if (t.options.useFancyHover && t.options.useSmoothHover && !hasClass(t.hovered, 'no-hover')) {
 					let pos = parseInt(t.hovered.getAttribute('pos'), 10);
 					pos = (isNaN(pos)) ? 0 : pos;
 
