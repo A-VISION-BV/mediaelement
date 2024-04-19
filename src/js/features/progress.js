@@ -500,7 +500,7 @@ Object.assign(MediaElementPlayer.prototype, {
 						handleMouseMove(event);
 					}
 				});
-				if (t.timefloat && !IS_IOS && !IS_ANDROID) {
+				if (t.timefloat && !isTouchDevice()) {
 					t.timefloat.style.display = 'block';
 				}
 				if (t.hovered && !IS_IOS && !IS_ANDROID && t.options.useSmoothHover) {
