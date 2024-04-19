@@ -246,7 +246,7 @@ Object.assign(MediaElementPlayer.prototype, {
 					}
 
 					// position floating time box
-					if (isTouchDevice()) {
+					if (!isTouchDevice()) {
 						if (pos < 0){
 							pos = 0;
 						}
