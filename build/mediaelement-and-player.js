@@ -1677,6 +1677,8 @@ Object.assign(_player.config, {
 
 	useSmoothHover: true,
 
+	useFancyHover: true,
+
 	forceLive: false
 });
 
@@ -1836,7 +1838,7 @@ Object.assign(_player2.default.prototype, {
 					t.updateCurrent(t.newTime);
 				}
 
-				if (!_constants.IS_IOS && !_constants.IS_ANDROID) {
+				if (!(0, _constants.isTouchDevice)()) {
 					if (pos < 0) {
 						pos = 0;
 					}
@@ -1878,7 +1880,7 @@ Object.assign(_player2.default.prototype, {
 						t.timefloat.style.display = 'block';
 					}
 				}
-			} else if (!_constants.IS_IOS && !_constants.IS_ANDROID && t.timefloat) {
+			} else if (!(0, _constants.isTouchDevice)() && t.timefloat) {
 				leftPos = t.timefloat.offsetWidth + width >= t.getElement(t.container).offsetWidth ? t.timefloat.offsetWidth / 2 : 0;
 				t.timefloat.style.left = leftPos + 'px';
 				t.timefloat.style.left = leftPos + 'px';
@@ -2025,6 +2027,10 @@ Object.assign(_player2.default.prototype, {
 			return false;
 		});
 
+		t.slider.addEventListener('touchmove', function (e) {
+			e.preventDefault();
+		});
+
 		for (var i = 0, total = events.length; i < total; i++) {
 			t.slider.addEventListener(events[i], function (e) {
 				t.forcedHandlePause = false;
@@ -2066,7 +2072,7 @@ Object.assign(_player2.default.prototype, {
 						handleMouseMove(event);
 					}
 				});
-				if (t.timefloat && !_constants.IS_IOS && !_constants.IS_ANDROID) {
+				if (t.timefloat && !(0, _constants.isTouchDevice)()) {
 					t.timefloat.style.display = 'block';
 				}
 				if (t.hovered && !_constants.IS_IOS && !_constants.IS_ANDROID && t.options.useSmoothHover) {
@@ -2199,7 +2205,7 @@ Object.assign(_player2.default.prototype, {
 				t.setTransformStyle(t.current, 'scaleX(' + newWidth / tW + ')');
 				t.setTransformStyle(t.handle, 'translateX(' + handlePos + 'px)');
 
-				if (t.options.useSmoothHover && !(0, _dom.hasClass)(t.hovered, 'no-hover')) {
+				if (t.options.useFancyHover && t.options.useSmoothHover && !(0, _dom.hasClass)(t.hovered, 'no-hover')) {
 					var pos = parseInt(t.hovered.getAttribute('pos'), 10);
 					pos = isNaN(pos) ? 0 : pos;
 
@@ -6766,6 +6772,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.cancelFullScreen = exports.requestFullScreen = exports.isFullScreen = exports.FULLSCREEN_EVENT_NAME = exports.HAS_NATIVE_FULLSCREEN_ENABLED = exports.HAS_TRUE_NATIVE_FULLSCREEN = exports.HAS_IOS_FULLSCREEN = exports.HAS_MS_NATIVE_FULLSCREEN = exports.HAS_MOZ_NATIVE_FULLSCREEN = exports.HAS_WEBKIT_NATIVE_FULLSCREEN = exports.HAS_NATIVE_FULLSCREEN = exports.SUPPORTS_NATIVE_HLS = exports.SUPPORT_PASSIVE_EVENT = exports.SUPPORT_POINTER_EVENTS = exports.HAS_MSE = exports.IS_STOCK_ANDROID = exports.IS_SAFARI = exports.IS_FIREFOX = exports.IS_CHROME = exports.IS_EDGE = exports.IS_IE = exports.IS_ANDROID = exports.IS_IOS = exports.IS_IPOD = exports.IS_IPHONE = exports.IS_IPAD = exports.UA = exports.NAV = undefined;
+exports.isTouchDevice = isTouchDevice;
 
 var _window = _dereq_(3);
 
@@ -6786,7 +6793,16 @@ var UA = exports.UA = NAV.userAgent.toLowerCase();
 var IS_IPAD = exports.IS_IPAD = /ipad/i.test(UA) && !_window2.default.MSStream;
 var IS_IPHONE = exports.IS_IPHONE = /iphone/i.test(UA) && !_window2.default.MSStream;
 var IS_IPOD = exports.IS_IPOD = /ipod/i.test(UA) && !_window2.default.MSStream;
-var IS_IOS = exports.IS_IOS = /ipad|iphone|ipod/i.test(UA) && !_window2.default.MSStream;
+var IS_IOS = exports.IS_IOS = iOS();
+
+function iOS() {
+	return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) || navigator.userAgent.includes("Mac") && "ontouchend" in _document2.default;
+}
+
+function isTouchDevice() {
+	return 'ontouchstart' in _window2.default || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+}
+
 var IS_ANDROID = exports.IS_ANDROID = /android/i.test(UA);
 var IS_IE = exports.IS_IE = /(trident|microsoft)/i.test(NAV.appName);
 var IS_EDGE = exports.IS_EDGE = 'msLaunchUri' in NAV && !('documentMode' in _document2.default);
