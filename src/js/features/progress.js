@@ -452,6 +452,10 @@ Object.assign(MediaElementPlayer.prototype, {
 
 		// Required to manipulate mouse movements that require drag 'n' drop properly
 		t.slider.addEventListener('dragstart', () => false);
+		
+		t.slider.addEventListener('touchmove', (e) => {
+			e.preventDefault();
+		});
 
 		for (let i = 0, total = events.length; i < total; i++) {
 			t.slider.addEventListener(events[i], (e) => {
