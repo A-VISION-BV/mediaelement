@@ -22,6 +22,28 @@ jobs:
           scope: '@A-VISION-BV'
       - run: npm ci
       - run: grunt
-      - run: npm publish
+      
+      - name: create new version var
+        run: |
+          NEW_VERSION=$(node -p "require('./package-lock.json').version")
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        
+      - name: Create ZIP package
+        run: |
+          NEW_VERSION=${{ env.NEW_VERSION }}
+          cd build && zip -r ../mediaelement-dist-${NEW_VERSION}.zip ./
+      
+      - name: Create a new draft release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.NEW_VERSION }}
+          name: ${{ env.NEW_VERSION }}
+          artifactErrorsFailBuild: true
+          artifacts: "mediaelement-dist-${{ env.NEW_VERSION }}.zip"
+          draft: true
+          generateReleaseNotes: true
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - run: npm publish
+    #   env:
+    #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
