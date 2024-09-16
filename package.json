@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/A-VISION-BV/mediaelement.git"
   },
+  "publishConfig": {
+    "@A-VISION-BV:registry": "https://npm.pkg.github.com"
+  },
   "bugs": {
     "url": "https://github.com/A-VISION-BV/mediaelement/issues?q=is%3Aissue+is%3Aopen+label%3ABug"
   },
