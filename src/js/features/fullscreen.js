@@ -327,7 +327,12 @@ Object.assign(MediaElementPlayer.prototype, {
 		removeClass(t.getElement(t.container), `${t.options.classPrefix}container-fullscreen`);
 
 		if (t.options.setDimensions) {
-			t.getElement(t.container).style.width = `${t.normalWidth}px`;
+			if (t.options.useMaxWidthForContainer) {
+				t.getElement(t.container).style.maxWidth = `${t.normalWidth}px`;
+				t.getElement(t.container).style.width = '';
+			} else {
+				t.getElement(t.container).style.width = `${t.normalWidth}px`;
+			}
 			t.getElement(t.container).style.height = `${t.normalHeight}px`;
 
 			if (isNative) {
