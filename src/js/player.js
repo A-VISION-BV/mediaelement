@@ -52,6 +52,8 @@ export const config = {
 	defaultSeekForwardInterval: (media) => media.getDuration() * 0.05,
 	// Set dimensions via JS instead of CSS
 	setDimensions: true,
+	// sets maxWidth instead of width for just the container element.
+	useMaxWidthForContainer: false,
 	// Width of audio player
 	audioWidth: -1,
 	// Height of audio player
@@ -1283,10 +1285,15 @@ class MediaElementPlayer {
 
 		width = isString(width) && width.indexOf('%') > -1 ? width : `${parseFloat(width)}px`;
 		height = isString(height) && height.indexOf('%') > -1 ? height : `${parseFloat(height)}px`;
+		
+		if (t.options.useMaxWidthForContainer) {
+			t.getElement(t.container).style.maxWidth = width;
+		} else {
+			t.getElement(t.container).style.width = width;
+		}
+		t.getElement(t.container).style.height = height;		
 
-		t.getElement(t.container).style.width = width;
-		t.getElement(t.container).style.height = height;
-
+		
 		const layers = t.getElement(t.layers).children;
 		for (let i = 0, total = layers.length; i < total; i++) {
 			layers[i].style.width = width;
