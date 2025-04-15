@@ -1509,7 +1509,12 @@ Object.assign(_player2.default.prototype, {
 		(0, _dom.removeClass)(t.getElement(t.container), t.options.classPrefix + 'container-fullscreen');
 
 		if (t.options.setDimensions) {
-			t.getElement(t.container).style.width = t.normalWidth + 'px';
+			if (t.options.useMaxWidthForContainer) {
+				t.getElement(t.container).style.maxWidth = t.normalWidth + 'px';
+				t.getElement(t.container).style.width = '';
+			} else {
+				t.getElement(t.container).style.width = t.normalWidth + 'px';
+			}
 			t.getElement(t.container).style.height = t.normalHeight + 'px';
 
 			if (isNative) {
@@ -3557,6 +3562,8 @@ var config = exports.config = {
 
 	setDimensions: true,
 
+	useMaxWidthForContainer: false,
+
 	audioWidth: -1,
 
 	audioHeight: -1,
@@ -4635,7 +4642,11 @@ var MediaElementPlayer = function () {
 			width = (0, _general.isString)(width) && width.indexOf('%') > -1 ? width : parseFloat(width) + 'px';
 			height = (0, _general.isString)(height) && height.indexOf('%') > -1 ? height : parseFloat(height) + 'px';
 
-			t.getElement(t.container).style.width = width;
+			if (t.options.useMaxWidthForContainer) {
+				t.getElement(t.container).style.maxWidth = width;
+			} else {
+				t.getElement(t.container).style.width = width;
+			}
 			t.getElement(t.container).style.height = height;
 
 			var layers = t.getElement(t.layers).children;
