@@ -1911,6 +1911,10 @@ var HtmlMediaElement = {
 		if (_constants.IS_ANDROID && /\/mp(3|4)$/i.test(type) || ~['application/x-mpegurl', 'vnd.apple.mpegurl', 'audio/mpegurl', 'audio/hls', 'video/hls'].indexOf(type.toLowerCase()) && _constants.SUPPORTS_NATIVE_HLS) {
 			return 'yes';
 		} else if (mediaElement.canPlayType) {
+			if (_constants.IS_CHROME || _constants.IS_FIREFOX || _constants.IS_EDGE) {
+				return '';
+			}
+
 			return mediaElement.canPlayType(type.toLowerCase()).replace(/no/, '');
 		} else {
 			return '';

@@ -1,7 +1,7 @@
 {
   "name": "@A-VISION-BV/mediaelement",
   "license": "MIT",
-  "version": "7.0.8",
+  "version": "7.0.9",
   "main": "full.js",
   "repository": {
     "type": "git",

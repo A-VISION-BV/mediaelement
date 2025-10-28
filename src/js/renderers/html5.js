@@ -5,7 +5,13 @@ import document from 'global/document';
 import mejs from '../core/mejs';
 import {renderer} from '../core/renderer';
 import {createEvent} from '../utils/general';
-import {SUPPORTS_NATIVE_HLS, IS_ANDROID} from '../utils/constants';
+import {
+	SUPPORTS_NATIVE_HLS, 
+	IS_ANDROID, 
+	IS_CHROME, 
+	IS_FIREFOX, 
+	IS_EDGE
+} from '../utils/constants';
 
 /**
  * Native HTML5 Renderer
@@ -35,6 +41,25 @@ const HtmlMediaElement = {
 				'video/hls'].indexOf(type.toLowerCase()) && SUPPORTS_NATIVE_HLS)) {
 			return 'yes';
 		} else if (mediaElement.canPlayType) {
+			
+			//
+			// Hacky solution added on 28-10-2025 because Chrome did not go to the HLS player anymore.
+			// Because it supports native HLS.
+			// this solution makes the player think that neither desktop browser supports any native videos, 
+			// thus it will switch to HLS
+			// 
+			// The problem with native HLS is that the browser won't have a quality selector anymore, 
+			// and with native HLS no quality options are exposed.
+			// 
+			// So the upside of this is consistency with regards to having quality selector in all 3 browsers.
+			// 
+			// There is an open issue, from 2016 about HTMLMediaElement / HTMLVideoElement not supporting different qualities
+			// https://github.com/whatwg/html/issues/562
+			// 
+			if(IS_CHROME || IS_FIREFOX || IS_EDGE) {
+				return ''
+			}
+			
 			return mediaElement.canPlayType(type.toLowerCase()).replace(/no/, '');
 		} else {
 			return '';
